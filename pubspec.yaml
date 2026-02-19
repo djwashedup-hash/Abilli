@@ -1,0 +1,44 @@
+name: economic_influence
+description: Maps consumer purchases to corporate ownership chains and major shareholders
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  provider: ^6.1.1
+  
+  # Date formatting
+  intl: ^0.19.0
+  
+  # Fuzzy string matching for merchant names
+  string_similarity: ^2.1.0
+  
+  # Native-only dependencies (commented out for web build)
+  # Uncomment these for iOS/Android builds:
+  # sqflite: ^2.3.0
+  # image_picker: ^1.0.7
+  # google_mlkit_text_recognition: ^0.11.0
+  
+  # Shared preferences for local storage (works on all platforms)
+  shared_preferences: ^2.2.2
+  
+  # UUID generation
+  uuid: ^4.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  
+  # No assets needed - all data is in code
