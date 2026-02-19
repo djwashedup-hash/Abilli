@@ -6,36 +6,42 @@ import 'screens/add_purchase_screen.dart';
 import 'screens/monthly_report_screen.dart';
 import 'screens/alternatives_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/theme_selector_screen.dart';
 import 'services/purchase_service.dart';
-import 'theme/app_theme.dart';
+import 'theme/theme_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => PurchaseService(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PurchaseService()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
       child: const AbilliApp(),
     ),
   );
 }
 
-/// Main app widget.
 class AbilliApp extends StatelessWidget {
   const AbilliApp({super.key});
   
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Abilli',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      home: const MainNavigationScreen(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Abilli',
+          debugShowCheckedModeBanner: false,
+          theme: themeProvider.themeData,
+          home: const MainNavigationScreen(),
+        );
+      },
     );
   }
 }
 
-/// Main navigation screen with bottom tabs.
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
   
@@ -78,6 +84,21 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
+        actions: [
+          // Theme switcher button
+          IconButton(
+            icon: const Icon(Icons.palette_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ThemeSelectorScreen(),
+                ),
+              );
+            },
+            tooltip: 'Change Theme',
+          ),
+        ],
       ),
       body: IndexedStack(
         index: _currentIndex,

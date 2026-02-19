@@ -94,24 +94,26 @@ class SettingsScreen extends StatelessWidget {
               
               const SizedBox(height: 16),
               
-              const Card(
+              Card(
                 child: Column(
                   children: [
                     // App info
-                    ListTile(
+                    const ListTile(
                       leading: Icon(
                         Icons.info_outline,
                         color: AppTheme.accentBlue,
                       ),
-                      title: Text('Abilli'),
+                      title: Text('Economic Influence'),
                       subtitle: Text('Version 1.0.0'),
                     ),
-                    Divider(color: AppTheme.border, height: 1),
+                    
+                    const Divider(color: AppTheme.border, height: 1),
+                    
                     // Description
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
-                        'Abilli maps your purchases to corporate ownership '
+                        'Economic Influence maps your purchases to corporate ownership '
                         'chains and major shareholders. All data is stored locally on '
                         'your device.',
                         style: TextStyle(
@@ -284,7 +286,7 @@ class SettingsScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Abilli Privacy Policy',
+                'Economic Influence Privacy Policy',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
