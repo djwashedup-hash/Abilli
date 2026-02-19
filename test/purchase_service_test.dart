@@ -1,5 +1,5 @@
-import 'package:economic_influence/models/purchase.dart';
-import 'package:economic_influence/services/purchase_service.dart';
+import 'package:abilli/models/purchase.dart';
+import 'package:abilli/services/purchase_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

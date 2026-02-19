@@ -1,4 +1,4 @@
-import 'package:economic_influence/data/ownership_database.dart';
+import 'package:abilli/data/ownership_database.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

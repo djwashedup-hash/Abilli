@@ -15,19 +15,19 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => PurchaseService(),
-      child: const EconomicInfluenceApp(),
+      child: const AbilliApp(),
     ),
   );
 }
 
 /// Main app widget.
-class EconomicInfluenceApp extends StatelessWidget {
-  const EconomicInfluenceApp({super.key});
+class AbilliApp extends StatelessWidget {
+  const AbilliApp({super.key});
   
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Economic Influence',
+      title: 'Abilli',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: const MainNavigationScreen(),

@@ -103,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
                         Icons.info_outline,
                         color: AppTheme.accentBlue,
                       ),
-                      title: Text('Economic Influence'),
+                      title: Text('Abilli'),
                       subtitle: Text('Version 1.0.0'),
                     ),
                     Divider(color: AppTheme.border, height: 1),
@@ -111,7 +111,7 @@ class SettingsScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
-                        'Economic Influence maps your purchases to corporate ownership '
+                        'Abilli maps your purchases to corporate ownership '
                         'chains and major shareholders. All data is stored locally on '
                         'your device.',
                         style: TextStyle(
@@ -284,7 +284,7 @@ class SettingsScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Economic Influence Privacy Policy',
+                'Abilli Privacy Policy',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),

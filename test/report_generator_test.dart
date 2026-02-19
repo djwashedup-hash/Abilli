@@ -1,5 +1,5 @@
-import 'package:economic_influence/data/report_generator.dart';
-import 'package:economic_influence/models/purchase.dart';
+import 'package:abilli/data/report_generator.dart';
+import 'package:abilli/models/purchase.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

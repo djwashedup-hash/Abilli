@@ -1,4 +1,4 @@
-import 'package:economic_influence/services/receipt_parser.dart';
+import 'package:abilli/services/receipt_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
