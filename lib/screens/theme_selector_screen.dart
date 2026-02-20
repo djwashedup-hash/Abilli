@@ -1,81 +1,105 @@
+// lib/screens/theme_selector_screen.dart
+// Fixed - only 4 themes (removed elegant and retro)
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../theme/theme_provider.dart';
 
 class ThemeSelectorScreen extends StatelessWidget {
   const ThemeSelectorScreen({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final isDark = themeProvider.isDarkMode;
+
     return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF0D1117) : Colors.white,
       appBar: AppBar(
-        title: const Text('Select Theme'),
+        backgroundColor: isDark ? const Color(0xFF161B22) : Colors.grey[100],
+        elevation: 0,
+        title: Text(
+          'Choose Theme',
+          style: TextStyle(
+            color: isDark ? Colors.white : Colors.black87,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
-      body: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              const Text(
-                'CHOOSE YOUR STYLE',
-                style: TextStyle(
-                  fontSize: 12,
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              _ThemeCard(
-                name: 'Dark',
-                description: 'Original GitHub-inspired dark theme',
-                colors: const [Color(0xFF0D1117), Color(0xFF58A6FF)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.dark,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.dark),
-              ),
-              
-              _ThemeCard(
-                name: 'Elegant',
-                description: 'Luxury navy & gold aesthetic',
-                colors: const [Color(0xFF0A1628), Color(0xFFD4AF37)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.elegant,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.elegant),
-              ),
-              
-              _ThemeCard(
-                name: 'Corporate',
-                description: 'Professional white & navy',
-                colors: const [Color(0xFFFFFFFF), Color(0xFF003366)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.corporate,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.corporate),
-              ),
-              
-              _ThemeCard(
-                name: 'Punk',
-                description: 'Rebellious black & neon',
-                colors: const [Color(0xFF0A0A0A), Color(0xFFFF006E)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.punk,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.punk),
-              ),
-              
-              _ThemeCard(
-                name: 'Minimalist',
-                description: 'Clean Scandinavian white & gray',
-                colors: const [Color(0xFFFFFFFF), Color(0xFF212121)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.minimalist,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.minimalist),
-              ),
-              
-              _ThemeCard(
-                name: 'Retro',
-                description: '80s synthwave purple & neon',
-                colors: const [Color(0xFF1A0A2E), Color(0xFFFF00FF)],
-                isSelected: themeProvider.currentStyle == AppThemeStyle.retro,
-                onTap: () => themeProvider.setTheme(AppThemeStyle.retro),
-              ),
-            ],
-          );
-        },
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Text(
+            'Select Your Style',
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black87,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Personalize your Abilli experience',
+            style: TextStyle(
+              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 24),
+
+          // Dark Theme (GitHub-inspired)
+          _ThemeCard(
+            name: 'Dark',
+            description: 'Original GitHub-inspired dark theme with blue accents',
+            colors: const [Color(0xFF0D1117), Color(0xFF58A6FF)],
+            isSelected: themeProvider.currentStyle == AppThemeStyle.dark,
+            onTap: () => themeProvider.setTheme(AppThemeStyle.dark),
+            isDark: isDark,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Corporate Theme
+          _ThemeCard(
+            name: 'Corporate',
+            description: 'Professional blue-grey theme for business use',
+            colors: const [Color(0xFFF8F9FA), Color(0xFF0052CC)],
+            isSelected: themeProvider.currentStyle == AppThemeStyle.corporate,
+            onTap: () => themeProvider.setTheme(AppThemeStyle.corporate),
+            isDark: isDark,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Punk Theme
+          _ThemeCard(
+            name: 'Punk',
+            description: 'Bold neon yellow on black with an anarchist edge',
+            colors: const [Color(0xFF1a1a1a), Color(0xFFFFFF00)],
+            isSelected: themeProvider.currentStyle == AppThemeStyle.punk,
+            onTap: () => themeProvider.setTheme(AppThemeStyle.punk),
+            isDark: isDark,
+          ),
+
+          const SizedBox(height: 16),
+
+          // Minimalist Theme
+          _ThemeCard(
+            name: 'Minimalist',
+            description: 'Clean black and white with subtle grey accents',
+            colors: const [Color(0xFFFFFFFF), Color(0xFF000000)],
+            isSelected: themeProvider.currentStyle == AppThemeStyle.minimalist,
+            onTap: () => themeProvider.setTheme(AppThemeStyle.minimalist),
+            isDark: isDark,
+          ),
+        ],
       ),
     );
   }
@@ -87,80 +111,88 @@ class _ThemeCard extends StatelessWidget {
   final List<Color> colors;
   final bool isSelected;
   final VoidCallback onTap;
-  
+  final bool isDark;
+
   const _ThemeCard({
     required this.name,
     required this.description,
     required this.colors,
     required this.isSelected,
     required this.onTap,
+    required this.isDark,
   });
-  
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: isSelected 
-                ? Border.all(color: colors[1], width: 2)
-                : null,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF161B22) : Colors.grey[100],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? colors[1]
+                : isDark
+                    ? const Color(0xFF30363D)
+                    : Colors.grey[300]!,
+            width: isSelected ? 3 : 1,
           ),
-          child: Row(
-            children: [
-              // Color preview
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: colors,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+        ),
+        child: Row(
+          children: [
+            // Color preview
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: colors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isDark ? Colors.white24 : Colors.black12,
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+
+            // Text content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              const SizedBox(width: 16),
-              
-              // Text
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      fontSize: 14,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              
-              // Checkmark
-              if (isSelected)
-                Icon(
-                  Icons.check_circle,
-                  color: colors[1],
-                  size: 28,
-                ),
-            ],
-          ),
+            ),
+
+            // Selection indicator
+            if (isSelected)
+              Icon(
+                Icons.check_circle,
+                color: colors[1],
+                size: 28,
+              ),
+          ],
         ),
       ),
     );
