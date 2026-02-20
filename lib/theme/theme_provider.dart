@@ -16,6 +16,21 @@ class ThemeProvider extends ChangeNotifier {
   
   AppThemeStyle get currentStyle => _currentStyle;
   
+  bool get isDarkMode => _currentStyle == AppThemeStyle.dark;
+  
+  Color get accentColor {
+    switch (_currentStyle) {
+      case AppThemeStyle.corporate:
+        return const Color(0xFF001F3F);
+      case AppThemeStyle.punk:
+        return const Color(0xFFFF1493);
+      case AppThemeStyle.minimalist:
+        return const Color(0xFF424242);
+      case AppThemeStyle.dark:
+        return const Color(0xFF0D47A1);
+    }
+  }
+  
   ThemeData get themeData {
     switch (_currentStyle) {
       case AppThemeStyle.corporate:
@@ -25,7 +40,6 @@ class ThemeProvider extends ChangeNotifier {
       case AppThemeStyle.minimalist:
         return MinimalistTheme.theme;
       case AppThemeStyle.dark:
-      default:
         return AppTheme.darkTheme;
     }
   }
