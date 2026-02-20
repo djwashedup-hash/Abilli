@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-/// Represents a product that can be purchased.
+/// Represents a product category that can be purchased.
 /// 
 /// Products are linked to companies and can have alternatives
 /// suggested for users who want to explore different options.

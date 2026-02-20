@@ -21,11 +21,9 @@ dependencies:
   # Fuzzy string matching for merchant names
   string_similarity: ^2.1.0
   
-  # Native-only dependencies (commented out for web build)
-  # Uncomment these for iOS/Android builds:
-  # sqflite: ^2.3.0
-  # image_picker: ^1.0.7
-  # google_mlkit_text_recognition: ^0.11.0
+  # Native dependencies (wrapped in kIsWeb checks for web compatibility)
+  image_picker: ^1.0.7
+  google_mlkit_text_recognition: ^0.15.1
   
   # Shared preferences for local storage (works on all platforms)
   shared_preferences: ^2.2.2
