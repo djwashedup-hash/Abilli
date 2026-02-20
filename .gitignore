@@ -47,3 +47,7 @@ app.*.map.json
 # Local tooling / scratch
 .claude/
 Billi/
+
+# Android signing keys (NEVER commit to version control!)
+*.jks
+my-release-key.jks
