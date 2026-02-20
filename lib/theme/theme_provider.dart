@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
-import 'elegant_theme.dart';
 import 'corporate_theme.dart';
 import 'punk_theme.dart';
 import 'minimalist_theme.dart';
-import 'retro_theme.dart';
 
 enum AppThemeStyle {
   dark,      // Original GitHub dark
-  elegant,   // Navy & Gold
   corporate, // White & Navy
   punk,      // Black & Neon
   minimalist,// White & Gray
-  retro,     // Purple & Neon
 }
 
 class ThemeProvider extends ChangeNotifier {
@@ -22,16 +18,12 @@ class ThemeProvider extends ChangeNotifier {
   
   ThemeData get themeData {
     switch (_currentStyle) {
-      case AppThemeStyle.elegant:
-        return ElegantTheme.theme;
       case AppThemeStyle.corporate:
         return CorporateTheme.theme;
       case AppThemeStyle.punk:
         return PunkTheme.theme;
       case AppThemeStyle.minimalist:
         return MinimalistTheme.theme;
-      case AppThemeStyle.retro:
-        return RetroTheme.theme;
       case AppThemeStyle.dark:
       default:
         return AppTheme.darkTheme;
@@ -40,16 +32,12 @@ class ThemeProvider extends ChangeNotifier {
   
   String get currentThemeName {
     switch (_currentStyle) {
-      case AppThemeStyle.elegant:
-        return 'Elegant';
       case AppThemeStyle.corporate:
         return 'Corporate';
       case AppThemeStyle.punk:
         return 'Punk';
       case AppThemeStyle.minimalist:
         return 'Minimalist';
-      case AppThemeStyle.retro:
-        return 'Retro';
       case AppThemeStyle.dark:
         return 'Dark';
     }
