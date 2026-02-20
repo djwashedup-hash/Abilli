@@ -16,9 +16,42 @@ workflows:
       
       - name: Build Android APK
         script: flutter build apk --release
+      
+      - name: Build Android App Bundle
+        script: flutter build appbundle --release
     
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
+      - build/app/outputs/bundle/release/*.aab
+    
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+
+  ios-release:
+    name: iOS Release
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get dependencies
+        script: flutter pub get
+      
+      - name: Analyze
+        script: flutter analyze
+      
+      - name: Build iOS
+        script: flutter build ios --release --no-codesign
+    
+    artifacts:
+      - build/ios/iphoneos/*.app
+    
+    publishing:
+      app_store_connect:
+        auth: $APP_STORE_CONNECT_AUTH
 
   web-release:
     name: Web Release
