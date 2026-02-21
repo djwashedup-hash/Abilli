@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Abilli uses your camera to scan paper receipts</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Abilli accesses your photos to scan saved receipts</string>
 </dict>
 </plist>
