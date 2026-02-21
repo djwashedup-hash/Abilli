@@ -14,11 +14,8 @@ workflows:
       - name: Run tests
         script: flutter test
       
-      - name: Authenticate with Shorebird
-        script: echo $SHOREBIRD_TOKEN | shorebird login --ci
-      
-      - name: Build Android with Shorebird
-        script: shorebird release android
+      - name: Build Android App Bundle
+        script: flutter build appbundle --release
     
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
