@@ -50,7 +50,6 @@ class FloatingThemeButton extends StatelessWidget {
       case AppThemeStyle.minimalist:
         return const Color(0xFF212121); // Dark gray
       case AppThemeStyle.dark:
-      default:
         return const Color(0xFF58A6FF); // GitHub blue
     }
   }

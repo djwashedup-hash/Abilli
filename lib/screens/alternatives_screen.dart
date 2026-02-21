@@ -175,10 +175,10 @@ class _AlternativeCard extends StatelessWidget {
             ),
             
             // Description
-            if (alternative.description != null) ...[
+            ...[
               const SizedBox(height: 4),
               Text(
-                alternative.description!,
+                alternative.description,
                 style: const TextStyle(
                   color: AppTheme.textSecondary,
                   fontSize: 14,

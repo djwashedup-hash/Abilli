@@ -2,7 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:provider/provider.dart';
 import '../services/receipt_parser.dart';
+import '../services/purchase_service.dart';
+import '../models/purchase.dart';
 
 /// Receipt scanner screen.
 /// 
@@ -255,9 +258,9 @@ class _ReceiptScannerScreenState extends State<ReceiptScannerScreen> {
           _parsedResult = '✓ Parsed: ${result.storeName} - \$${result.total?.toStringAsFixed(2)}';
         });
         
-        // Show confirmation dialog
+        // Show confirmation dialog — pass outer context for Provider access
         if (mounted) {
-          _showParsedResultDialog(result);
+          _showParsedResultDialog(context, result);
         }
       } else {
         setState(() {
@@ -338,7 +341,7 @@ class _ReceiptScannerScreenState extends State<ReceiptScannerScreen> {
         final result = _receiptParser.parse(recognizedText.text);
         
         if (result.success && mounted) {
-          _showParsedResultDialog(result);
+          _showParsedResultDialog(context, result);
         } else {
           setState(() {
             _parsedResult = 'Could not parse receipt. Try pasting text manually.';
@@ -356,10 +359,10 @@ class _ReceiptScannerScreenState extends State<ReceiptScannerScreen> {
     }
   }
   
-  void _showParsedResultDialog(ReceiptParseResult result) {
+  void _showParsedResultDialog(BuildContext outerContext, ReceiptParseResult result) {
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+      context: outerContext,
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Receipt Parsed'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -373,14 +376,24 @@ class _ReceiptScannerScreenState extends State<ReceiptScannerScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to add purchase screen with parsed data
-              // This would need to be implemented with navigation
+            onPressed: () async {
+              Navigator.pop(dialogContext);
+              final purchase = Purchase.create(
+                productName: result.storeName ?? 'Unknown Store',
+                amount: result.total ?? 0.0,
+                date: result.date ?? DateTime.now(),
+                companyName: result.storeName ?? 'Unknown',
+              );
+              await outerContext.read<PurchaseService>().addPurchase(purchase);
+              if (outerContext.mounted) {
+                ScaffoldMessenger.of(outerContext).showSnackBar(
+                  SnackBar(content: Text('Saved: ${purchase.companyName} \$${purchase.formattedAmount}')),
+                );
+              }
             },
             child: const Text('Add Purchase'),
           ),

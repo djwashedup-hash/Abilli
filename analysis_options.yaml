@@ -10,15 +10,6 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  exclude:
-    - lib/alternative.dart
-    - lib/alternatives_screen.dart
-    - lib/email_receipt_detector.dart
-    - lib/floating_theme_button.dart
-    - lib/shopping_item.dart
-    - lib/shopping_list_screen.dart
-    - lib/shopping_list_service.dart
-    - lib/theme_selector_screen.dart
 
 linter:
   # The lint rules applied to this project can be customized in the

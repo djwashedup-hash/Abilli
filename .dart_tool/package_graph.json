@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "abilli",
-      "version": "1.0.0+1",
+      "version": "1.0.4+5",
       "dependencies": [
         "flutter",
         "google_mlkit_text_recognition",

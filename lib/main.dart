@@ -7,7 +7,9 @@ import 'screens/monthly_report_screen.dart';
 import 'screens/alternatives_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/theme_selector_screen.dart';
+import 'screens/shopping_list_screen.dart';
 import 'services/purchase_service.dart';
+import 'services/shopping_list_service.dart';
 import 'theme/theme_provider.dart';
 
 void main() {
@@ -18,6 +20,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => PurchaseService()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => ShoppingListService()),
       ],
       child: const AbilliApp(),
     ),
@@ -57,14 +60,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     AddPurchaseScreen(),
     AlternativesScreen(),
     MonthlyReportScreen(),
+    ShoppingListScreen(),
     SettingsScreen(),
   ];
-  
+
   final _titles = const [
     'Scan Receipt',
     'Add Purchase',
     'Alternatives',
     'Report',
+    'Shopping List',
     'Settings',
   ];
   
@@ -81,7 +86,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
       appBar: AppBar(
         title: Text(_titles[_currentIndex]),
         actions: [
@@ -107,6 +114,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.document_scanner_outlined),
@@ -129,12 +137,18 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: 'Report',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart_outlined),
+            activeIcon: Icon(Icons.shopping_cart),
+            label: 'List',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
             activeIcon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
       ),
+    ),
     );
   }
 }

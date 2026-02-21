@@ -1,8 +1,6 @@
 // lib/services/email_receipt_detector.dart
 // Email receipt detection framework
 
-import 'dart:async';
-import 'package:flutter/foundation.dart';
 
 /// Result of parsing a receipt email
 class ReceiptParseResult {
