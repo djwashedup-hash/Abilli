@@ -209,7 +209,7 @@ class ShoppingItem {
   final String category;
   final String? notes;
   final PurchasePattern? purchasePattern;
-  final List<Alternative> alternativeSuggestions;
+  final List<AlternativeSuggestion> alternativeSuggestions;
   final bool isChecked;
   final DateTime addedDate;
   final DateTime? checkedDate;
@@ -257,9 +257,9 @@ class ShoppingItem {
 
   bool get hasAlternatives => alternativeSuggestions.isNotEmpty;
 
-  Alternative? get bestAlternative {
+  AlternativeSuggestion? get bestAlternative {
     if (alternativeSuggestions.isEmpty) return null;
-    return alternativeSuggestions.reduce((a, b) => a.id.compareTo(b.id) > 0 ? a : b);
+    return alternativeSuggestions.reduce((a, b) => a.matchScore > b.matchScore ? a : b);
   }
 
   ShoppingItem check() => ShoppingItem(
@@ -297,9 +297,11 @@ class ShoppingItem {
     'notes': notes,
     'purchasePattern': purchasePattern?.toJson(),
     'alternativeSuggestions': alternativeSuggestions.map((a) => {
-      'id': a.id,
-      'name': a.name,
-      'category': a.category,
+      'alternativeId': a.alternative.id,
+      'forProduct': a.forProduct,
+      'forBrand': a.forBrand,
+      'reason': a.reason,
+      'matchScore': a.matchScore,
     }).toList(),
     'isChecked': isChecked,
     'addedDate': addedDate.toIso8601String(),

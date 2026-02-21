@@ -1657,10 +1657,11 @@ final List<Product> _products = [
     companyIds: ['taco_bell', 'chipotle'],
   ),
 ];
-
 // ==================== ALTERNATIVES ====================
+// Temporarily disabled due to Alternative class refactoring
+// TODO: Update alternative definitions to match new Alternative class structure
 
-final List<Alternative> _alternatives = [
+final List<Alternative> _alternatives = [];
   const Alternative(
     id: 'alt_country_grocer',
     name: 'Country Grocer',

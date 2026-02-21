@@ -43,16 +43,12 @@ class FloatingThemeButton extends StatelessWidget {
   
   Color _getThemeAccentColor(AppThemeStyle style) {
     switch (style) {
-      case AppThemeStyle.elegant:
-        return const Color(0xFFD4AF37); // Gold
       case AppThemeStyle.corporate:
         return const Color(0xFF003366); // Navy
       case AppThemeStyle.punk:
         return const Color(0xFFFF006E); // Neon pink
       case AppThemeStyle.minimalist:
         return const Color(0xFF212121); // Dark gray
-      case AppThemeStyle.retro:
-        return const Color(0xFFFF00FF); // Neon magenta
       case AppThemeStyle.dark:
       default:
         return const Color(0xFF58A6FF); // GitHub blue
@@ -144,16 +140,6 @@ class ThemePickerSheet extends StatelessWidget {
                       },
                     ),
                     _ThemeQuickButton(
-                      name: 'Elegant',
-                      color: const Color(0xFFD4AF37),
-                      bgColor: const Color(0xFF0A1628),
-                      isSelected: themeProvider.currentStyle == AppThemeStyle.elegant,
-                      onTap: () {
-                        themeProvider.setTheme(AppThemeStyle.elegant);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    _ThemeQuickButton(
                       name: 'Corp',
                       color: const Color(0xFF003366),
                       bgColor: const Color(0xFFFFFFFF),
@@ -180,16 +166,6 @@ class ThemePickerSheet extends StatelessWidget {
                       isSelected: themeProvider.currentStyle == AppThemeStyle.minimalist,
                       onTap: () {
                         themeProvider.setTheme(AppThemeStyle.minimalist);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    _ThemeQuickButton(
-                      name: 'Retro',
-                      color: const Color(0xFFFF00FF),
-                      bgColor: const Color(0xFF1A0A2E),
-                      isSelected: themeProvider.currentStyle == AppThemeStyle.retro,
-                      onTap: () {
-                        themeProvider.setTheme(AppThemeStyle.retro);
                         Navigator.pop(context);
                       },
                     ),
