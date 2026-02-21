@@ -38,5 +38,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - shorebird.yaml
   
   # Shorebird config is in project root, not needed as asset
