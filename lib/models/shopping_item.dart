@@ -139,12 +139,12 @@ class PurchasePattern {
           if (days > 0) intervals.add(days);
         }
         
-        final mean = intervals.reduce((a, b) => a + b) / intervals.length;
+        final mean = (intervals.reduce((a, b) => a + b) / intervals.length).toDouble();
         final variance = intervals.fold<double>(
           0, 
           (sum, d) => sum + (d - mean) * (d - mean)
         ) / intervals.length;
-        final stdDev = variance > 0 ? variance : 0;
+        final stdDev = variance > 0 ? variance.toDouble() : 0.0;
         
         final cv = mean > 0 ? stdDev / mean : 1;
         confidence = (1 - cv.clamp(0, 1)) * (sorted.length / 10).clamp(0.3, 1.0);
@@ -209,7 +209,7 @@ class ShoppingItem {
   final String category;
   final String? notes;
   final PurchasePattern? purchasePattern;
-  final List<AlternativeSuggestion> alternativeSuggestions;
+  final List<Alternative> alternativeSuggestions;
   final bool isChecked;
   final DateTime addedDate;
   final DateTime? checkedDate;
@@ -257,10 +257,9 @@ class ShoppingItem {
 
   bool get hasAlternatives => alternativeSuggestions.isNotEmpty;
 
-  AlternativeSuggestion? get bestAlternative {
+  Alternative? get bestAlternative {
     if (alternativeSuggestions.isEmpty) return null;
-    return alternativeSuggestions.reduce((a, b) => 
-      a.matchScore > b.matchScore ? a : b);
+    return alternativeSuggestions.reduce((a, b) => a.id.compareTo(b.id) > 0 ? a : b);
   }
 
   ShoppingItem check() => ShoppingItem(
@@ -298,11 +297,9 @@ class ShoppingItem {
     'notes': notes,
     'purchasePattern': purchasePattern?.toJson(),
     'alternativeSuggestions': alternativeSuggestions.map((a) => {
-      'alternativeId': a.alternative.id,
-      'forProduct': a.forProduct,
-      'forBrand': a.forBrand,
-      'reason': a.reason,
-      'matchScore': a.matchScore,
+      'id': a.id,
+      'name': a.name,
+      'category': a.category,
     }).toList(),
     'isChecked': isChecked,
     'addedDate': addedDate.toIso8601String(),
