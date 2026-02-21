@@ -35,22 +35,48 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.abilli.app
+      vars:
+        APP_STORE_CONNECT_KEY_IDENTIFIER: XA7WRS4XL2
+        APP_STORE_CONNECT_ISSUER_ID: 87256a58-cb6e-43a1-aef7-dcf36a42acbf
+        APP_STORE_CONNECT_PRIVATE_KEY: $APP_STORE_CONNECT_PRIVATE_KEY
+        SHOREBIRD_TOKEN: $SHOREBIRD_TOKEN
     scripts:
+      - name: Set up keychain
+        script: keychain initialize
+
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files com.abilli.app \
+            --type IOS_APP_STORE \
+            --create
+
+      - name: Add certificates to keychain
+        script: keychain add-certificates
+
+      - name: Set up Xcode signing
+        script: xcode-project use-profiles
+
       - name: Get dependencies
         script: flutter pub get
-      
+
       - name: Analyze
         script: flutter analyze
-      
-      - name: Build iOS
-        script: flutter build ios --release --no-codesign
-    
+
+      - name: Release iOS with Shorebird
+        script: |
+          echo $SHOREBIRD_TOKEN | shorebird login --ci
+          shorebird release ios
+
     artifacts:
-      - build/ios/iphoneos/*.app
-    
+      - build/ios/ipa/*.ipa
+
     publishing:
       app_store_connect:
-        auth: $APP_STORE_CONNECT_AUTH
+        auth: integration
+        submit_to_testflight: true
 
   web-release:
     name: Web Release
