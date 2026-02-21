@@ -126,7 +126,7 @@ class PurchasePattern {
       }
     }
 
-    final avgDays = intervalCount > 0 ? totalDays / intervalCount : 0;
+    final avgDays = intervalCount > 0 ? (totalDays / intervalCount).toDouble() : 0.0;
     final totalAmount = sorted.fold<double>(0, (sum, p) => sum + p.amount);
     final avgAmount = totalAmount / sorted.length;
 
