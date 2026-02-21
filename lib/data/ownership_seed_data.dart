@@ -1656,103 +1656,10 @@ final List<Product> _products = [
     category: 'Dining',
     companyIds: ['taco_bell', 'chipotle'],
   ),
-];
+];// ==================== ALTERNATIVES ====================
 // ==================== ALTERNATIVES ====================
-// Temporarily disabled due to Alternative class refactoring
-// TODO: Update alternative definitions to match new Alternative class structure
-
-final List<Alternative> _alternatives = [];
-  const Alternative(
-    id: 'alt_country_grocer',
-    name: 'Country Grocer',
-    category: 'Grocery',
-    description: 'Locally owned grocery chain on Vancouver Island',
-    companyId: 'country_grocer',
-    alternativeToCompanyIds: ['save_on_foods', 'quality_foods', 'thrifty_foods'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_mec',
-    name: 'Mountain Equipment Company',
-    category: 'Outdoor Retail',
-    description: 'Canadian outdoor retail cooperative',
-    companyId: 'mec',
-    alternativeToCompanyIds: ['canadian_tire', 'sport_chek'],
-    isCooperative: true,
-  ),
-  const Alternative(
-    id: 'alt_farmers_market',
-    name: 'Local Farmers Markets',
-    category: 'Grocery',
-    description: 'Buy directly from local producers',
-    alternativeToCompanyIds: ['loblaw', 'superstore', 'walmart'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_independent_coffee',
-    name: 'Independent Coffee Shops',
-    category: 'Coffee',
-    description: 'Locally owned cafes and roasters',
-    alternativeToCompanyIds: ['starbucks', 'tim_hortons'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_local_restaurant',
-    name: 'Independent Restaurants',
-    category: 'Dining',
-    description: 'Family-owned local restaurants',
-    alternativeToCompanyIds: ['mcdonalds', 'burger_king', 'wendys'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_local_pharmacy',
-    name: 'Independent Pharmacies',
-    category: 'Health',
-    description: 'Locally owned pharmacies',
-    alternativeToCompanyIds: ['shoppers_drug_mart', 'cvs', 'walgreens'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_coop_gas',
-    name: 'Co-op Gas Stations',
-    category: 'Fuel',
-    description: 'Member-owned gas stations',
-    alternativeToCompanyIds: ['petro_canada', 'shell_canada', 'esso'],
-    isCooperative: true,
-  ),
-  const Alternative(
-    id: 'alt_local_hardware',
-    name: 'Local Hardware Stores',
-    category: 'Home',
-    description: 'Independent hardware retailers',
-    alternativeToCompanyIds: ['home_depot', 'lowes', 'rona'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_used_books',
-    name: 'Used Bookstores',
-    category: 'Media',
-    description: 'Independent used book shops',
-    alternativeToCompanyIds: ['indigo', 'amazon'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-  const Alternative(
-    id: 'alt_library',
-    name: 'Public Library',
-    category: 'Media',
-    description: 'Free books and media from your local library',
-    alternativeToCompanyIds: ['indigo', 'amazon'],
-    isLocal: true,
-    isIndependent: true,
-  ),
-];
+// Temporarily disabled - will be re-integrated in future release
+final List<Map<String,dynamic>> _alternatives = [];
 
 // ==================== PUBLIC API ====================
 
@@ -1769,8 +1676,8 @@ Map<String, List<Map<String, dynamic>>> getOwnership() =>
 /// Gets all merchant aliases for fuzzy matching.
 Map<String, String> getMerchantAliases() => Map.unmodifiable(_merchantAliases);
 
-/// Gets all alternatives.
-List<Alternative> getAlternatives() => List.unmodifiable(_alternatives);
+/// Gets all alternatives (currently empty - will be re-integrated).
+List<Map<String,dynamic>> getAlternatives() => List.unmodifiable(_alternatives);
 
 /// Gets all products.
 List<Product> getProducts() => List.unmodifiable(_products);
