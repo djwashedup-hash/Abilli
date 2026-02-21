@@ -1659,7 +1659,7 @@ final List<Product> _products = [
 ];// ==================== ALTERNATIVES ====================
 // ==================== ALTERNATIVES ====================
 // Temporarily disabled - will be re-integrated in future release
-final List<Map<String,dynamic>> _alternatives = [];
+final List<Alternative> _alternatives = [];
 
 // ==================== PUBLIC API ====================
 
@@ -1677,7 +1677,7 @@ Map<String, List<Map<String, dynamic>>> getOwnership() =>
 Map<String, String> getMerchantAliases() => Map.unmodifiable(_merchantAliases);
 
 /// Gets all alternatives (currently empty - will be re-integrated).
-List<Map<String,dynamic>> getAlternatives() => List.unmodifiable(_alternatives);
+List<Alternative> getAlternatives() => List.unmodifiable(_alternatives);
 
 /// Gets all products.
 List<Product> getProducts() => List.unmodifiable(_products);
