@@ -103,7 +103,7 @@ class PurchasePattern {
     return nextPurchase.difference(DateTime.now()).inDays;
   }
 
-  factory PurchasePattern.fromPurchases(List<_Purchase> purchases) {
+  factory PurchasePattern.fromPurchases(List<PurchaseRecord> purchases) {
     if (purchases.isEmpty) {
       return const PurchasePattern(
         purchaseCount: 0,
@@ -113,7 +113,7 @@ class PurchasePattern {
       );
     }
 
-    final sorted = List<_Purchase>.from(purchases)
+    final sorted = List<PurchaseRecord>.from(purchases)
       ..sort((a, b) => a.date.compareTo(b.date));
 
     double totalDays = 0;
@@ -195,11 +195,11 @@ class PurchasePattern {
   );
 }
 
-class _Purchase {
+class PurchaseRecord {
   final DateTime date;
   final double amount;
   
-  _Purchase({required this.date, required this.amount});
+  PurchaseRecord({required this.date, required this.amount});
 }
 
 /// Shopping list item with smart predictions

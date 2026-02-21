@@ -1,3 +1,5 @@
+export 'models/alternative.dart';
+/*
 // lib/models/alternative.dart
 // Enhanced alternative model with independence and local scoring
 
@@ -8,127 +10,7 @@ class IndependenceScore {
   final int value; // 0-100
   final String explanation;
   final List<String> factors;
-  final bool isCooperative;
-  final bool isBCorp;
-  final bool isEmployeeOwned;
-  final bool isFamilyOwned;
-  final bool isPubliclyTraded;
-
-  const IndependenceScore({
-    required this.value,
-    required this.explanation,
-    required this.factors,
-    this.isCooperative = false,
-    this.isBCorp = false,
-    this.isEmployeeOwned = false,
-    this.isFamilyOwned = false,
-    this.isPubliclyTraded = false,
-  });
-
-  String get category {
-    if (value >= 86) return 'Community-Owned';
-    if (value >= 61) return 'Independent';
-    if (value >= 31) return 'Franchise';
-    return 'Corporate';
-  }
-
-  Color get color {
-    if (value >= 86) return const Color(0xFF238636);
-    if (value >= 61) return const Color(0xFF58A6FF);
-    if (value >= 31) return const Color(0xFFFFA500);
-    return const Color(0xFFFF6B6B);
-  }
-
-  IconData get icon {
-    if (isCooperative) return Icons.people;
-    if (isBCorp) return Icons.verified;
-    if (isEmployeeOwned) return Icons.work;
-    if (isFamilyOwned) return Icons.family_restroom;
-    if (isPubliclyTraded) return Icons.trending_up;
-    return Icons.store;
-  }
-}
-
-/// Score representing how local a business is to the user
-class LocalScore {
-  final int value; // 0-100
-  final String location;
-  final double? distanceKm;
-  final String? city;
-  final String? state;
-  final String? country;
-  final bool sourcesLocally;
-  final double? percentLocalSourcing;
-
-  const LocalScore({
-    required this.value,
-    required this.location,
-    this.distanceKm,
-    this.city,
-    this.state,
-    this.country,
-    this.sourcesLocally = false,
-    this.percentLocalSourcing,
-  });
-
-  String get category {
-    if (value >= 86) return 'Local';
-    if (value >= 61) return 'Regional';
-    if (value >= 31) return 'National';
-    return 'International';
-  }
-
-  String get distanceDisplay {
-    if (distanceKm == null) return location;
-    if (distanceKm! < 1) return 'Less than 1 km away';
-    if (distanceKm! < 25) return '${distanceKm!.toStringAsFixed(1)} km away';
-    if (distanceKm! < 200) return '${distanceKm!.toStringAsFixed(0)} km away';
-    return location;
-  }
-
-  Color get color {
-    if (value >= 86) return const Color(0xFF238636);
-    if (value >= 61) return const Color(0xFF58A6FF);
-    if (value >= 31) return const Color(0xFFFFA500);
-    return const Color(0xFFFF6B6B);
-  }
-}
-
-/// User-configurable filter for alternative recommendations
-class AlternativeFilter {
-  int minIndependenceScore;
-  int minLocalScore;
-  bool prioritizeCoops;
-  bool prioritizeBCorps;
-  bool prioritizeEmployeeOwned;
-  bool prioritizeFamilyOwned;
-  double? maxDistanceKm;
-  List<String>? preferredCategories;
-  String? searchQuery;
-
-  AlternativeFilter({
-    this.minIndependenceScore = 0,
-    this.minLocalScore = 0,
-    this.prioritizeCoops = false,
-    this.prioritizeBCorps = false,
-    this.prioritizeEmployeeOwned = false,
-    this.prioritizeFamilyOwned = false,
-    this.maxDistanceKm,
-    this.preferredCategories,
-    this.searchQuery,
-  });
-
-  bool passes(Alternative alt) {
-    if (alt.independenceScore.value < minIndependenceScore) return false;
-    if (alt.localScore.value < minLocalScore) return false;
-    if (maxDistanceKm != null && alt.localScore.distanceKm != null) {
-      if (alt.localScore.distanceKm! > maxDistanceKm!) return false;
-    }
-    if (searchQuery != null && searchQuery!.isNotEmpty) {
-      final query = searchQuery!.toLowerCase();
-      final searchable = '${alt.name} ${alt.description} ${alt.category} ${alt.tags.join(' ')}'.toLowerCase();
-      if (!searchable.contains(query)) return false;
-    }
+  export 'models/alternative.dart';
     return true;
   }
 

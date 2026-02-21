@@ -1,3 +1,5 @@
+export 'screens/alternatives_screen.dart';
+/*
 // lib/screens/alternatives_screen.dart
 // Alternatives with independence/local scoring and filters
 
@@ -19,107 +21,12 @@ class AlternativesScreen extends StatefulWidget {
   @override
   State<AlternativesScreen> createState() => _AlternativesScreenState();
 }
+*/
 
 class _AlternativesScreenState extends State<AlternativesScreen> {
   final TextEditingController _searchController = TextEditingController();
   AlternativeFilter _filter = AlternativeFilter();
-  bool _showFilters = false;
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = context.watch<ThemeProvider>();
-    final isDark = themeProvider.isDarkMode;
-    final accentColor = themeProvider.accentColor;
-    
-    final bgPrimary = isDark ? const Color(0xFF0D1117) : Colors.white;
-    final bgSecondary = isDark ? const Color(0xFF161B22) : Colors.grey[100];
-    final textPrimary = isDark ? Colors.white : Colors.black87;
-    final textSecondary = isDark ? Colors.grey[400] : Colors.grey[600];
-    final borderColor = isDark ? const Color(0xFF30363D) : Colors.grey[300]!;
-
-    return Scaffold(
-      backgroundColor: bgPrimary,
-      appBar: AppBar(
-        backgroundColor: bgSecondary,
-        elevation: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Alternatives',
-              style: TextStyle(
-                color: textPrimary,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            if (widget.forProduct != null)
-              Text(
-                'for ${widget.forProduct}',
-                style: TextStyle(
-                  color: textSecondary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              _showFilters ? Icons.filter_list_off : Icons.filter_list,
-              color: textSecondary,
-            ),
-            onPressed: () => setState(() => _showFilters = !_showFilters),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          _buildSearchBar(bgSecondary, textPrimary, textSecondary, borderColor),
-          if (_showFilters) _buildFilterPanel(isDark, textPrimary, textSecondary, accentColor, borderColor),
-          if (_hasActiveFilters) _buildFilterChips(accentColor, isDark),
-          Expanded(
-            child: _buildAlternativesList(isDark, textPrimary, textSecondary, borderColor, accentColor),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar(Color? bgSecondary, Color textPrimary, Color? textSecondary, Color borderColor) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: bgSecondary,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: borderColor),
-      ),
-      child: TextField(
-        controller: _searchController,
-        style: TextStyle(color: textPrimary),
-        decoration: InputDecoration(
-          hintText: 'Search alternatives...',
-          hintStyle: TextStyle(color: textSecondary),
-          prefixIcon: Icon(Icons.search, color: textSecondary),
-          suffixIcon: _searchController.text.isNotEmpty
-            ? IconButton(
-                icon: Icon(Icons.clear, color: textSecondary),
-                onPressed: () {
-                  _searchController.clear();
-                  setState(() {
-                    _filter = _filter.copyWith(searchQuery: null);
-                  });
-                },
-              )
-            : null,
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+  export 'screens/alternatives_screen.dart';
         ),
         onChanged: (value) {
           setState(() {

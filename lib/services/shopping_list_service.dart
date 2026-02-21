@@ -8,14 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/shopping_item.dart';
 import '../models/alternative.dart';
 
-/// Internal purchase record for pattern building
-class _PurchaseRecord {
-  final DateTime date;
-  final double amount;
-  
-  _PurchaseRecord({required this.date, required this.amount});
-}
-
 /// Service for managing smart shopping list
 class ShoppingListService extends ChangeNotifier {
   static const String _storageKey = 'abilli_shopping_list';
@@ -193,18 +185,16 @@ class ShoppingListService extends ChangeNotifier {
   }
 
   Future<void> rebuildPatterns(List<({String name, DateTime date, double amount})> purchases) async {
-    final byName = <String, List<_PurchaseRecord>>{};
+    final byName = <String, List<PurchaseRecord>>{};
     for (final p in purchases) {
       final key = p.name.toLowerCase();
       byName.putIfAbsent(key, () => []);
-      byName[key]!.add(_PurchaseRecord(date: p.date, amount: p.amount));
+      byName[key]!.add(PurchaseRecord(date: p.date, amount: p.amount));
     }
 
     _patterns = {};
     for (final entry in byName.entries) {
-      final pattern = PurchasePattern.fromPurchases(
-        entry.value.map((p) => _PurchaseRecord(date: p.date, amount: p.amount)).toList()
-      );
+      final pattern = PurchasePattern.fromPurchases(entry.value);
       if (pattern.purchaseCount >= 2) {
         _patterns[entry.key] = pattern;
       }
@@ -379,9 +369,9 @@ class ShoppingListService extends ChangeNotifier {
     dates.add(item.checkedDate!);
     amounts.add(10.0);
 
-    final purchases = <_PurchaseRecord>[];
+    final purchases = <PurchaseRecord>[];
     for (int i = 0; i < dates.length && i < amounts.length; i++) {
-      purchases.add(_PurchaseRecord(date: dates[i], amount: amounts[i]));
+      purchases.add(PurchaseRecord(date: dates[i], amount: amounts[i]));
     }
 
     _patterns[key] = PurchasePattern.fromPurchases(purchases);

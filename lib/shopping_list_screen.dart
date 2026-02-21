@@ -1,3 +1,5 @@
+export 'screens/shopping_list_screen.dart';
+/*
 // lib/screens/shopping_list_screen.dart
 // Shopping list with urgency indicators
 
@@ -13,6 +15,7 @@ class ShoppingListScreen extends StatefulWidget {
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();
 }
+*/
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
   final TextEditingController _searchController = TextEditingController();

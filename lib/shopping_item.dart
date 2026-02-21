@@ -1,34 +1,6 @@
-// lib/models/shopping_item.dart
-// Smart shopping list with purchase pattern learning
-
-import 'alternative.dart';
-
-/// Urgency level for shopping items
-enum UrgencyLevel {
-  overdue,
-  urgent,
-  soon,
-  later,
-  unknown,
-}
-
-extension UrgencyLevelExtension on UrgencyLevel {
-  String get emoji {
-    switch (this) {
-      case UrgencyLevel.overdue:
-        return '🔴';
-      case UrgencyLevel.urgent:
-        return '🟠';
-      case UrgencyLevel.soon:
-        return '🟡';
-      case UrgencyLevel.later:
-        return '🟢';
-      case UrgencyLevel.unknown:
-        return '⚪';
-    }
-  }
-
-  String get label {
+export 'models/shopping_item.dart';
+/*
+export 'models/shopping_item.dart';
     switch (this) {
       case UrgencyLevel.overdue:
         return 'Overdue';
