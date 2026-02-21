@@ -37,7 +37,7 @@ workflows:
       cocoapods: default
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.abilli.app
+        bundle_identifier: ca.jasonwong.abilli
       vars:
         APP_STORE_CONNECT_KEY_IDENTIFIER: XA7WRS4XL2
         APP_STORE_CONNECT_ISSUER_ID: 87256a58-cb6e-43a1-aef7-dcf36a42acbf
@@ -49,7 +49,7 @@ workflows:
 
       - name: Fetch signing files
         script: |
-          app-store-connect fetch-signing-files com.abilli.app \
+          app-store-connect fetch-signing-files ca.jasonwong.abilli \
             --type IOS_APP_STORE \
             --create
 
