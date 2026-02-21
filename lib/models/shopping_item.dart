@@ -146,8 +146,8 @@ class PurchasePattern {
         ) / intervals.length;
         final stdDev = variance > 0 ? variance.toDouble() : 0.0;
         
-        final cv = mean > 0 ? stdDev / mean : 1;
-        confidence = (1 - cv.clamp(0, 1)) * (sorted.length / 10).clamp(0.3, 1.0);
+        final cv = mean > 0 ? stdDev / mean : 1.0;
+        confidence = ((1 - cv.clamp(0.0, 1.0)) * (sorted.length / 10)).clamp(0.3, 1.0);
       } else {
         confidence = 0.3;
       }

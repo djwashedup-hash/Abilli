@@ -109,23 +109,23 @@ class EmailReceiptDetector {
 
   /// Retailer patterns for extracting names
   static final Map<String, String> retailerPatterns = {
-    r'save[-\s]?on[-\s]?foods': 'Save-On-Foods',
-    r'safeway': 'Safeway',
-    r'walmart': 'Walmart',
-    r'costco': 'Costco',
-    r'whole\s*foods': 'Whole Foods',
-    r'amazon': 'Amazon',
-    r'starbucks': 'Starbucks',
-    r'mcdonald\'s': 'McDonald\'s',
-    r'subway': 'Subway',
-    r'door[d]?ash': 'DoorDash',
-    r'uber\s*eats': 'Uber Eats',
-    r'target': 'Target',
-    r'best\s*buy': 'Best Buy',
-    r'home\s*depot': 'Home Depot',
-    r'square': 'Square',
-    r'stripe': 'Stripe',
-    r'paypal': 'PayPal',
+    'saveonfoods': 'Save-On-Foods',
+    'safeway': 'Safeway',
+    'walmart': 'Walmart',
+    'costco': 'Costco',
+    'wholefoods': 'Whole Foods',
+    'amazon': 'Amazon',
+    'starbucks': 'Starbucks',
+    'mcdonalds': 'McDonald\'s',
+    'subway': 'Subway',
+    'doordash': 'DoorDash',
+    'ubereats': 'Uber Eats',
+    'target': 'Target',
+    'bestbuy': 'Best Buy',
+    'homedepot': 'Home Depot',
+    'square': 'Square',
+    'stripe': 'Stripe',
+    'paypal': 'PayPal',
   };
 
   /// Analyze an email to determine if it's likely a receipt
@@ -141,7 +141,7 @@ class EmailReceiptDetector {
       score += 0.4;
       
       for (final entry in retailerPatterns.entries) {
-        if (fromDomain.contains(entry.key.replaceAll(r'\s*', '').replaceAll(r'[-\s]?', ''))) {
+        if (fromDomain.contains(entry.key)) {
           detectedRetailer = entry.value;
           break;
         }
@@ -180,8 +180,7 @@ class EmailReceiptDetector {
 
       if (detectedRetailer == null) {
         for (final entry in retailerPatterns.entries) {
-          final regex = RegExp(entry.key, caseSensitive: false);
-          if (regex.hasMatch(bodyPreview)) {
+          if (bodyPreview.toLowerCase().contains(entry.key)) {
             detectedRetailer = entry.value;
             score += 0.1;
             break;
@@ -199,8 +198,7 @@ class EmailReceiptDetector {
       String? detectedRetailer = retailer;
       if (detectedRetailer == null) {
         for (final entry in retailerPatterns.entries) {
-          final regex = RegExp(entry.key, caseSensitive: false);
-          if (regex.hasMatch(emailBody)) {
+          if (emailBody.toLowerCase().contains(entry.key)) {
             detectedRetailer = entry.value;
             break;
           }
@@ -232,7 +230,7 @@ class EmailReceiptDetector {
   }
 
   String _extractDomain(String email) {
-    final match = RegExp(r'@([^>]+)').firstMatch(email);
+    final match = RegExp(r'@([^>\s]+)').firstMatch(email);
     return match?.group(1)?.toLowerCase() ?? '';
   }
 
@@ -262,15 +260,26 @@ class EmailReceiptDetector {
     final patterns = [
       r'(\d{1,2})[/-](\d{1,2})[/-](\d{4})',
       r'(\d{4})[/-](\d{1,2})[/-](\d{1,2})',
-      r'([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})',
     ];
 
     for (final pattern in patterns) {
       final match = RegExp(pattern).firstMatch(text);
       if (match != null) {
         try {
-          final parts = match.group(0)!;
-          return DateTime.tryParse(parts.replaceAll('/', '-'));
+          final day = int.parse(match.group(1)!);
+          final month = int.parse(match.group(2)!);
+          final year = int.parse(match.group(3)!);
+          
+          // Try to determine if it's MM/DD/YYYY or DD/MM/YYYY
+          if (year > 2000 && year < 2100) {
+            if (day <= 12 && month > 12) {
+              // Likely DD/MM/YYYY
+              return DateTime(year, day, month);
+            } else {
+              // Likely MM/DD/YYYY
+              return DateTime(year, month, day);
+            }
+          }
         } catch (_) {
           continue;
         }

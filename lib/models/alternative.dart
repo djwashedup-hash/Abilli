@@ -1,152 +1,132 @@
 // lib/models/alternative.dart
-// Enhanced alternative model with independence and local scoring
+// Alternative model for local business recommendations
 
 import 'package:flutter/material.dart';
 
-/// Score representing how independent a business is from billionaire/corporate control
-class IndependenceScore {
-  final int value; // 0-100
-  final String explanation;
-  final List<String> factors;
+/// Alternative business recommendation
+/// 
+/// This is the ORIGINAL Alternative class used by ownership_seed_data.dart
+/// and throughout the app. It uses simple boolean flags for classification.
+class Alternative {
+  final String id;
+  final String name;
+  final String category;
+  final String description;
+  final String? companyId;
+  final List<String> alternativeToCompanyIds;
+  final bool isLocal;
   final bool isCooperative;
-  final bool isBCorp;
-  final bool isEmployeeOwned;
-  final bool isFamilyOwned;
-  final bool isPubliclyTraded;
+  final bool isIndependent;
+  final String? website;
+  final String? address;
+  final String? phone;
 
-  const IndependenceScore({
-    required this.value,
-    required this.explanation,
-    required this.factors,
+  const Alternative({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.description,
+    this.companyId,
+    required this.alternativeToCompanyIds,
+    this.isLocal = false,
     this.isCooperative = false,
-    this.isBCorp = false,
-    this.isEmployeeOwned = false,
-    this.isFamilyOwned = false,
-    this.isPubliclyTraded = false,
+    this.isIndependent = false,
+    this.website,
+    this.address,
+    this.phone,
   });
 
-  String get category {
-    if (value >= 86) return 'Community-Owned';
-    if (value >= 61) return 'Independent';
-    if (value >= 31) return 'Franchise';
-    return 'Corporate';
+  /// Get a score representing independence (0-100)
+  int get independenceScore {
+    if (isCooperative) return 90;
+    if (isIndependent && isLocal) return 85;
+    if (isIndependent) return 70;
+    if (isLocal) return 50;
+    return 30;
   }
 
-  Color get color {
-    if (value >= 86) return const Color(0xFF238636); // Green
-    if (value >= 61) return const Color(0xFF58A6FF); // Blue
-    if (value >= 31) return const Color(0xFFFFA500); // Orange
-    return const Color(0xFFFF6B6B); // Red
+  /// Get a score representing local-ness (0-100)
+  int get localScore {
+    if (isLocal && isIndependent) return 95;
+    if (isLocal) return 75;
+    if (isCooperative) return 60;
+    return 20;
   }
 
-  IconData get icon {
-    if (isCooperative) return Icons.people;
-    if (isBCorp) return Icons.verified;
-    if (isEmployeeOwned) return Icons.work;
-    if (isFamilyOwned) return Icons.family_restroom;
-    if (isPubliclyTraded) return Icons.trending_up;
-    return Icons.store;
+  /// Get classification label
+  String get classification {
+    if (isCooperative) return 'Cooperative';
+    if (isIndependent && isLocal) return 'Local Independent';
+    if (isIndependent) return 'Independent';
+    if (isLocal) return 'Local';
+    return 'Alternative';
+  }
+
+  /// Get color for UI representation
+  Color get classificationColor {
+    if (isCooperative) return const Color(0xFF238636); // Green
+    if (isIndependent && isLocal) return const Color(0xFF58A6FF); // Blue
+    if (isIndependent) return const Color(0xFFFFA500); // Orange
+    if (isLocal) return const Color(0xFFFFD700); // Yellow
+    return const Color(0xFF808080); // Gray
   }
 }
 
-/// Score representing how local a business is to the user
-class LocalScore {
-  final int value; // 0-100
-  final String location;
-  final double? distanceKm;
-  final String? city;
-  final String? state;
-  final String? country;
-  final bool sourcesLocally;
-  final double? percentLocalSourcing;
+/// Alternative suggestion wrapper for shopping list
+/// 
+/// Links an Alternative to a specific product/brand with a match score
+class AlternativeSuggestion {
+  final Alternative alternative;
+  final String forProduct;
+  final String? forBrand;
+  final String reason;
+  final double matchScore;
 
-  const LocalScore({
-    required this.value,
-    required this.location,
-    this.distanceKm,
-    this.city,
-    this.state,
-    this.country,
-    this.sourcesLocally = false,
-    this.percentLocalSourcing,
+  const AlternativeSuggestion({
+    required this.alternative,
+    required this.forProduct,
+    this.forBrand,
+    required this.reason,
+    required this.matchScore,
   });
-
-  String get category {
-    if (value >= 86) return 'Local';
-    if (value >= 61) return 'Regional';
-    if (value >= 31) return 'National';
-    return 'International';
-  }
-
-  String get distanceDisplay {
-    if (distanceKm == null) return location;
-    if (distanceKm! < 1) return 'Less than 1 km away';
-    if (distanceKm! < 25) return '${distanceKm!.toStringAsFixed(1)} km away';
-    if (distanceKm! < 200) return '${distanceKm!.toStringAsFixed(0)} km away';
-    return location;
-  }
-
-  Color get color {
-    if (value >= 86) return const Color(0xFF238636); // Green
-    if (value >= 61) return const Color(0xFF58A6FF); // Blue
-    if (value >= 31) return const Color(0xFFFFA500); // Orange
-    return const Color(0xFFFF6B6B); // Red
-  }
 }
 
-/// User-configurable filter for alternative recommendations
+/// Filter for alternative recommendations
 class AlternativeFilter {
   int minIndependenceScore;
   int minLocalScore;
   bool prioritizeCoops;
-  bool prioritizeBCorps;
-  bool prioritizeEmployeeOwned;
-  bool prioritizeFamilyOwned;
-  double? maxDistanceKm;
-  List<String>? preferredCategories;
+  bool prioritizeIndependent;
+  bool prioritizeLocal;
   String? searchQuery;
 
   AlternativeFilter({
     this.minIndependenceScore = 0,
     this.minLocalScore = 0,
     this.prioritizeCoops = false,
-    this.prioritizeBCorps = false,
-    this.prioritizeEmployeeOwned = false,
-    this.prioritizeFamilyOwned = false,
-    this.maxDistanceKm,
-    this.preferredCategories,
+    this.prioritizeIndependent = false,
+    this.prioritizeLocal = false,
     this.searchQuery,
   });
 
-  /// Check if an alternative passes the filter criteria
   bool passes(Alternative alt) {
-    if (alt.independenceScore.value < minIndependenceScore) return false;
-    if (alt.localScore.value < minLocalScore) return false;
-    if (maxDistanceKm != null && alt.localScore.distanceKm != null) {
-      if (alt.localScore.distanceKm! > maxDistanceKm!) return false;
-    }
+    if (alt.independenceScore < minIndependenceScore) return false;
+    if (alt.localScore < minLocalScore) return false;
     if (searchQuery != null && searchQuery!.isNotEmpty) {
       final query = searchQuery!.toLowerCase();
-      final searchable = '${alt.name} ${alt.description} ${alt.category} ${alt.tags.join(' ')}'.toLowerCase();
+      final searchable = '${alt.name} ${alt.description} ${alt.category}'.toLowerCase();
       if (!searchable.contains(query)) return false;
     }
     return true;
   }
 
-  /// Sort alternatives based on filter priorities
   List<Alternative> sort(List<Alternative> alternatives) {
     final scored = alternatives.map((alt) {
-      int score = alt.independenceScore.value + alt.localScore.value;
+      int score = alt.independenceScore + alt.localScore;
       
-      if (prioritizeCoops && alt.independenceScore.isCooperative) score += 50;
-      if (prioritizeBCorps && alt.independenceScore.isBCorp) score += 40;
-      if (prioritizeEmployeeOwned && alt.independenceScore.isEmployeeOwned) score += 30;
-      if (prioritizeFamilyOwned && alt.independenceScore.isFamilyOwned) score += 20;
-      
-      // Bonus for very close local businesses
-      if (alt.localScore.distanceKm != null && alt.localScore.distanceKm! < 10) {
-        score += 25;
-      }
+      if (prioritizeCoops && alt.isCooperative) score += 50;
+      if (prioritizeIndependent && alt.isIndependent) score += 30;
+      if (prioritizeLocal && alt.isLocal) score += 20;
       
       return (alternative: alt, score: score);
     }).toList();
@@ -164,100 +144,17 @@ class AlternativeFilter {
     int? minIndependenceScore,
     int? minLocalScore,
     bool? prioritizeCoops,
-    bool? prioritizeBCorps,
-    bool? prioritizeEmployeeOwned,
-    bool? prioritizeFamilyOwned,
-    double? maxDistanceKm,
-    List<String>? preferredCategories,
+    bool? prioritizeIndependent,
+    bool? prioritizeLocal,
     String? searchQuery,
   }) {
     return AlternativeFilter(
       minIndependenceScore: minIndependenceScore ?? this.minIndependenceScore,
       minLocalScore: minLocalScore ?? this.minLocalScore,
       prioritizeCoops: prioritizeCoops ?? this.prioritizeCoops,
-      prioritizeBCorps: prioritizeBCorps ?? this.prioritizeBCorps,
-      prioritizeEmployeeOwned: prioritizeEmployeeOwned ?? this.prioritizeEmployeeOwned,
-      prioritizeFamilyOwned: prioritizeFamilyOwned ?? this.prioritizeFamilyOwned,
-      maxDistanceKm: maxDistanceKm ?? this.maxDistanceKm,
-      preferredCategories: preferredCategories ?? this.preferredCategories,
+      prioritizeIndependent: prioritizeIndependent ?? this.prioritizeIndependent,
+      prioritizeLocal: prioritizeLocal ?? this.prioritizeLocal,
       searchQuery: searchQuery ?? this.searchQuery,
     );
   }
-}
-
-/// Enhanced alternative model with scoring
-class Alternative {
-  final String id;
-  final String name;
-  final String description;
-  final String category;
-  final List<String> tags;
-  final IndependenceScore independenceScore;
-  final LocalScore localScore;
-  final String? imageUrl;
-  final String? website;
-  final String? phone;
-  final String? address;
-  final Map<String, String>? socialMedia;
-  final List<String>? replacesBrands;
-  final double? averagePrice;
-  final double? priceComparison;
-  final List<String>? hours;
-  final bool isOpenNow;
-
-  const Alternative({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.category,
-    required this.tags,
-    required this.independenceScore,
-    required this.localScore,
-    this.imageUrl,
-    this.website,
-    this.phone,
-    this.address,
-    this.socialMedia,
-    this.replacesBrands,
-    this.averagePrice,
-    this.priceComparison,
-    this.hours,
-    this.isOpenNow = false,
-  });
-
-  String get valueProposition {
-    final parts = <String>[];
-    
-    if (independenceScore.value >= 61) {
-      parts.add('${independenceScore.category} business');
-    }
-    if (localScore.value >= 61) {
-      parts.add(localScore.distanceKm != null 
-        ? '${localScore.distanceKm!.toStringAsFixed(1)} km away'
-        : 'Locally owned');
-    }
-    if (priceComparison != null && priceComparison! < 1.0) {
-      final savings = ((1 - priceComparison!) * 100).toStringAsFixed(0);
-      parts.add('$savings% cheaper');
-    }
-    
-    return parts.join(' • ');
-  }
-}
-
-/// Suggested alternative for a specific product or category
-class AlternativeSuggestion {
-  final Alternative alternative;
-  final String forProduct;
-  final String? forBrand;
-  final String reason;
-  final double matchScore;
-
-  const AlternativeSuggestion({
-    required this.alternative,
-    required this.forProduct,
-    this.forBrand,
-    required this.reason,
-    required this.matchScore,
-  });
 }
